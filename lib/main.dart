@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
         body: [
           HomePage(),
           EventPage(),
-          Add_Event_Page(),
+          AddEventPage(),
         ][_curretIndex],
         bottomNavigationBar:BottomNavigationBar(
           currentIndex: _curretIndex,
