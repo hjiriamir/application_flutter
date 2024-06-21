@@ -1,3 +1,4 @@
+import 'package:date_field/date_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,6 +16,8 @@ class _AddEventPageState extends State<AddEventPage> {
   final _formKey=GlobalKey<FormState>();
   final confNameController =TextEditingController();
   final speakerNameController =TextEditingController();
+  String selectedTypeConf='talk';
+  DateTime selectedDate=DateTime.now();
 
   @override
   void dispose() {
@@ -68,17 +71,38 @@ class _AddEventPageState extends State<AddEventPage> {
             ),
 
 
-            DropdownButtonFormField(
-                items: [
-                  DropdownMenuItem(value:'talk', child:Text('Talk show')),
-                  DropdownMenuItem(value:'demo', child:Text('demo de code')),
-                  DropdownMenuItem(value:'partner', child:Text('Partner')),
-                ],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+            Container(
+              margin: EdgeInsets.only(bottom: 10),
+              child: DropdownButtonFormField(
+                  items: [
+                    DropdownMenuItem(value:'talk', child:Text('Talk show')),
+                    DropdownMenuItem(value:'demo', child:Text('demo de code')),
+                    DropdownMenuItem(value:'partner', child:Text('Partner')),
+                  ],
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
+                  value: selectedTypeConf,
+                  onChanged: (value){
+                    setState(() {
+                      selectedTypeConf=value!;
+                    });
+                  }
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 10),
+              child: DateTimeFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Enter Date',
                 ),
-                value: 'talk',
-                onChanged: (value){}
+                firstDate: DateTime.now().add(const Duration(days: 10)),
+                lastDate: DateTime.now().add(const Duration(days: 40)),
+                initialPickerDateTime: DateTime.now().add(const Duration(days: 20)),
+                onChanged: (DateTime? value) {
+                  selectedDate = value!;
+                },
+              ),
             ),
             SizedBox(
 
@@ -93,7 +117,7 @@ class _AddEventPageState extends State<AddEventPage> {
                           const SnackBar (content: Text("Envoi en cours..."))
                         );
                         FocusScope.of(context).requestFocus(FocusNode());//fermer le clavier au moment du click sur le boutton envoyer
-                    print("Ajout du conference $confName par le speaker $speakerName");
+                    print("Ajout du conference $confName par le speaker $speakerName et de type $selectedTypeConf a la date $selectedDate");
                     }
                   },
                   child: Text("Envoyer")
